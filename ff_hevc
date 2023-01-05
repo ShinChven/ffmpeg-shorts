@@ -16,7 +16,7 @@ AUDIO_BIT_RATE=${AUDIO_BIT_RATE%.*}
 echo "Video bit_rate: $VIDEO_BIT_RATE"
 echo "Audio bit_rate: $AUDIO_BIT_RATE"
 
-NEW_FILE=$(echo "$FILE" | sed 's/\.[^.]*$//').hevc.mkv
+NEW_FILE=$(echo "$FILE" | sed 's/\.[^.]*$//').hevc-aac.mp4
 
 # transcode video and audio
 set -x
