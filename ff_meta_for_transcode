@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This script will print the bit rate of a video file
+# This script will print some metadata about a media file for transcoding consideration using ffprobe.
 
 FILE=$1
 set -x

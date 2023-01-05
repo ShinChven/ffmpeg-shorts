@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# This script is to transcode a video file to hevc and aac keeping bit_rate using ffmpeg.
+
+FILE=$1
+
+# ffprobe get video and audio bit_rate in kb
+VIDEO_BIT_RATE=$(ffprobe -v quiet -print_format json -show_entries stream=bit_rate -select_streams v:0 -of default=noprint_wrappers=1:nokey=1 "$FILE")
+AUDIO_BIT_RATE=$(ffprobe -v quiet -print_format json -show_entries stream=bit_rate -select_streams a:0 -of default=noprint_wrappers=1:nokey=1 "$FILE")
+
+# string to number
+VIDEO_BIT_RATE=${VIDEO_BIT_RATE%.*}
+AUDIO_BIT_RATE=${AUDIO_BIT_RATE%.*}
+
+# print bit_rate in kb
+echo "Video bit_rate: $VIDEO_BIT_RATE"
+echo "Audio bit_rate: $AUDIO_BIT_RATE"
+
+NEW_FILE=$(echo "$FILE" | sed 's/\.[^.]*$//').hevc.mkv
+
+# transcode video and audio
+set -x
+ffmpeg -i "$FILE" -c:v hevc_videotoolbox -b:v $VIDEO_BIT_RATE -c:a aac -b:a $AUDIO_BIT_RATE -tag:v hvc1 $NEW_FILE
