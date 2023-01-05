@@ -20,4 +20,4 @@ NEW_FILE=$(echo "$FILE" | sed 's/\.[^.]*$//').hevc.mkv
 
 # transcode video and audio
 set -x
-ffmpeg -i "$FILE" -c:v hevc_videotoolbox -b:v $VIDEO_BIT_RATE -c:a aac -b:a $AUDIO_BIT_RATE -tag:v hvc1 $NEW_FILE
+ffmpeg -i "$FILE" -c:v hevc_videotoolbox -b:v $VIDEO_BIT_RATE -c:a aac -b:a $AUDIO_BIT_RATE -tag:v hvc1 "$NEW_FILE"
