@@ -4,4 +4,4 @@
 
 FILE=$1
 set -x
-ffprobe -v quiet -print_format json -show_entries stream=codec_type,bit_rate,codec_name,width,height,color_primaries,codec_tag_string -show_entries format=bit_rate "$FILE"
+ffprobe -v quiet -print_format json -show_entries stream=codec_type,bit_rate,codec_name,width,height,avg_frame_rate,r_frame_rate,color_primaries,codec_tag_string -show_entries format=bit_rate "$FILE"
