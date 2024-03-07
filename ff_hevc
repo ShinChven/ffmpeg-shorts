@@ -8,9 +8,17 @@ FILE=$1
 VIDEO_BIT_RATE=$(ffprobe -v quiet -print_format json -show_entries stream=bit_rate -select_streams v:0 -of default=noprint_wrappers=1:nokey=1 "$FILE")
 AUDIO_BIT_RATE=$(ffprobe -v quiet -print_format json -show_entries stream=bit_rate -select_streams a:0 -of default=noprint_wrappers=1:nokey=1 "$FILE")
 
-# string to number
-VIDEO_BIT_RATE=${VIDEO_BIT_RATE%.*}
-AUDIO_BIT_RATE=${AUDIO_BIT_RATE%.*}
+if [ "$VIDEO_BIT_RATE" == "N/A" ]; then
+    VIDEO_BIT_RATE=""
+else
+    VIDEO_BIT_RATE="-b:v $VIDEO_BIT_RATE"
+fi
+
+if [ "$AUDIO_BIT_RATE" == "N/A" ]; then
+    AUDIO_BIT_RATE=""
+else
+    AUDIO_BIT_RATE="-b:a $AUDIO_BIT_RATE"
+fi
 
 # print bit_rate in kb
 echo "Video bit_rate: $VIDEO_BIT_RATE"
@@ -20,4 +28,4 @@ NEW_FILE=$(echo "$FILE" | sed 's/\.[^.]*$//').hevc-aac.mp4
 
 # transcode video and audio
 set -x
-ffmpeg -i "$FILE" -c:v hevc_videotoolbox -b:v $VIDEO_BIT_RATE -c:a aac -b:a $AUDIO_BIT_RATE -tag:v hvc1 "$NEW_FILE"
+ffmpeg -i "$FILE" -c:v hevc_videotoolbox $VIDEO_BIT_RATE -c:a aac $AUDIO_BIT_RATE -tag:v hvc1 "$NEW_FILE"
